@@ -15,8 +15,9 @@ import {
   TabsList,
   TabsTrigger
 } from '@/components/ui/tabs.js';
-import RecentSales from './components/recent-sales.js';
+// import RecentSales from './components/recent-sales.js';
 import PDFViewer from './components/PDFViewer'; // Import the PDFViewer component
+// import BasicPDFViewer from './components/BasicPDFViewer'; // Import the PDFViewer component
 
 // API endpoint configuration
 const API_BASE_URL =
@@ -290,6 +291,7 @@ export default function DashboardPage() {
           {/* Overview Tab - Now contains PDF Viewer */}
           <TabsContent value="overview">
             <PDFViewer />
+            {/* <BasicPDFViewer /> */}
           </TabsContent>
 
           {/* Agent Dashboard Tab - New Component */}

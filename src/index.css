@@ -74,3 +74,33 @@
     font-family: 'Montserrat', sans-serif;
   }
 }
+
+/* Add this to your global CSS or as a styled component */
+.pdf-container-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+/* Target the internal elements of the PDF viewer */
+.pdf-container-wrapper > div {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Ensure the PDF container elements have proper positioning */
+.pdf-container-wrapper .rpv-core__viewer {
+  position: absolute !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* This ensures any nested scroll containers work properly */
+.pdf-container-wrapper .rpv-core__viewer-container {
+  position: absolute !important;
+}

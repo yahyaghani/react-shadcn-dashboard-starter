@@ -1,16 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-interface Section {
-  clause: string;
-  text: string;
-}
+import { Section } from '../types/pdf-viewer-types';
 
 interface DocumentAccordionProps {
   sections: Section[];
@@ -21,58 +10,57 @@ const DocumentAccordion: React.FC<DocumentAccordionProps> = ({
   sections,
   title = 'Document Sections'
 }) => {
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  // Handle expanding/collapsing all sections
-  const handleExpandAll = () => {
-    if (expandedItems.length === sections.length) {
-      setExpandedItems([]);
-    } else {
-      setExpandedItems(sections.map((_, index) => `item-${index}`));
-    }
+  const toggleSection = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>{title}</CardTitle>
-        <button
-          onClick={handleExpandAll}
-          className="text-sm text-blue-600 hover:text-blue-800"
-        >
-          {expandedItems.length === sections.length
-            ? 'Collapse All'
-            : 'Expand All'}
-        </button>
-      </CardHeader>
-      <CardContent>
-        {sections.length === 0 ? (
-          <div className="p-4 text-center text-gray-500">
-            No sections available for this document.
+    <div className="document-accordion">
+      <h3 className="mb-2 px-4 pt-3 text-sm font-medium">{title}</h3>
+      <div className="accordion-sections">
+        {sections.map((section, index) => (
+          <div key={index} className="border-t border-gray-200">
+            <button
+              className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm font-medium transition-colors ${
+                openIndex === index
+                  ? 'bg-blue-50 text-blue-700'
+                  : 'hover:bg-gray-50'
+              }`}
+              onClick={() => toggleSection(index)}
+            >
+              <span>{section.clause}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-4 w-4 transition-transform ${
+                  openIndex === index ? 'rotate-180 transform' : ''
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <div
+              className={`overflow-hidden transition-all ${
+                openIndex === index ? 'max-h-96' : 'max-h-0'
+              }`}
+            >
+              <div className="bg-gray-50 p-4 text-sm text-gray-700">
+                {section.text}
+              </div>
+            </div>
           </div>
-        ) : (
-          <Accordion
-            type="multiple"
-            value={expandedItems}
-            onValueChange={setExpandedItems}
-            className="w-full"
-          >
-            {sections.map((section, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="font-medium">
-                  {section.clause}
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="whitespace-pre-wrap p-2 text-gray-700">
-                    {section.text}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        )}
-      </CardContent>
-    </Card>
+        ))}
+      </div>
+    </div>
   );
 };
 
