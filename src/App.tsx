@@ -1,3 +1,5 @@
+//###App.tsx##
+
 import AppProvider from './providers';
 import AppRouter from './routes';
 
